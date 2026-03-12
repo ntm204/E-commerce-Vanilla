@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadingBar = document.getElementById('loading-bar') || createLoadingBar();
   const searchOverlay = document.getElementById('search-overlay');
   const searchBtn = document.getElementById('search-btn');
+  const searchBtnMobile = document.getElementById('search-btn-mobile');
   const searchClose = document.getElementById('search-close');
   const searchInput = document.getElementById('search-input');
   const searchResults = document.getElementById('search-results');
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   searchBtn?.addEventListener('click', openSearch);
+  searchBtnMobile?.addEventListener('click', openSearch);
   searchClose?.addEventListener('click', closeSearch);
 
   searchInput?.addEventListener('input', (e) => {

@@ -48,11 +48,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   &__left { 
     display: flex; align-items: center; gap: 3rem; 
     @include tablet { gap: 1.5rem; }
+    @include mobile { gap: 1rem; }
+  }
+
+  &__search-mobile {
+    display: none !important;
+    @include mobile { display: flex !important; }
   }
 
   &__logo { 
     font-family: $font-brand; font-size: 22px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; z-index: 2001; 
-    @include mobile { font-size: 18px; letter-spacing: 2px; }
+    @include mobile { font-size: 18px; letter-spacing: 2px; text-align: center; }
     span { color: $gray; font-weight: 300; }
   }
 
@@ -81,6 +87,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     padding: 5px; color: $black; @include flex-center; transition: opacity 0.3s;
     &:hover { opacity: 0.5; }
     .icon { width: 20px; height: 20px; }
+    &#search-btn {
+      @include mobile { display: none; }
+    }
   }
 
   &__cart-btn {
@@ -169,6 +178,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 // --- PAGES STYLING ---
 .about-section {
   padding: 80px 0;
+  @include mobile { padding: 40px 1.5rem 80px; }
   .editorial-row {
     display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; margin-bottom: 120px;
     @include tablet { gap: 40px; }
@@ -184,7 +194,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .contact-section {
   display: grid; grid-template-columns: 1fr 1.2fr; gap: 120px; padding: 80px 0;
   @include tablet { gap: 60px; }
-  @include mobile { grid-template-columns: 1fr; gap: 60px; padding: 40px 0 80px; }
+  @include mobile { grid-template-columns: 1fr; gap: 60px; padding: 40px 1.5rem 80px; }
   .contact-info {
     h2 { font-family: $font-brand; font-size: clamp(28px, 4vw, 36px); margin-bottom: 2rem; font-weight: 400; }
     .info-block { margin-bottom: 2.5rem; h4 { text-transform: uppercase; font-size: 11px; letter-spacing: 2px; color: $gray; margin-bottom: 0.5rem; } }

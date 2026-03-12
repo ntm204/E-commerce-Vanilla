@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Details | AETERNA.</title>
+  <title>Product Detail | AETERNA.</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
 </head>
@@ -15,6 +15,9 @@
           <button class="header__menu-trigger" id="menu-trigger">
             <span></span>
             <span></span>
+          </button>
+          <button class="header__icon-btn header__search-mobile" id="search-btn-mobile">
+            <i class="icon icon-search"></i>
           </button>
           <nav class="header__nav">
             <ul>
@@ -72,71 +75,71 @@
     </header>
 
     <main class="page-content" id="content">
-      <section class="product container">
-        <div class="product__gallery">
-          <div class="gallery__main img-placeholder">
-            <img id="main-product-img" src="" alt="">
-          </div>
-          <div class="gallery__thumbnails">
-            <!-- Dynamic thumbs -->
-          </div>
-        </div>
-
-        <div class="product__info">
-          <span class="product__brand">AETERNA.</span>
-          <h1 class="product__title">...</h1>
-          <p class="product__description">...</p>
-          <div class="product__price-container">
-            <span class="price">...</span>
-          </div>
-
-          <div class="product__actions">
-            <div class="product__quantity">
-              <button id="qty-minus"><i class="icon icon-minus"></i></button>
-              <span id="qty-value">0</span>
-              <button id="qty-plus"><i class="icon icon-plus"></i></button>
+      <div class="container">
+        <section class="product">
+          <div class="product__gallery">
+            <div class="gallery__main img-placeholder">
+              <img id="main-product-img" src="" alt="Product">
             </div>
-            <button class="product__add-to-cart" id="add-to-cart">
-              Add to Bag
-            </button>
+            <div class="gallery__thumbnails">
+              <!-- Thumbnails injected here -->
+            </div>
           </div>
-        </div>
-      </section>
 
-      <footer class="footer">
-        <div class="container">
-          <div class="footer__col">
-            <div class="footer__brand">AETERNA.</div>
-            <p class="footer__desc">Curating essential pieces for the modern wardrobe.</p>
+          <div class="product__info">
+            <h4 class="product__brand">AETERNA.</h4>
+            <h1 class="product__title">...</h1>
+            <p class="product__description">...</p>
+            <div class="product__price-wrapper">
+              <span class="price">...</span>
+            </div>
+
+            <div class="product__actions">
+              <div class="quantity-selector">
+                <button id="qty-minus"><i class="icon icon-minus"></i></button>
+                <span id="qty-value">0</span>
+                <button id="qty-plus"><i class="icon icon-plus"></i></button>
+              </div>
+              <button class="product__add-to-cart" id="add-to-cart">Add to Bag</button>
+            </div>
           </div>
-          <div class="footer__col">
-            <h4 class="footer__title">Shop</h4>
-            <ul class="footer__links">
-              <li><a href="#">All Collections</a></li>
-              <li><a href="#">New Arrivals</a></li>
-            </ul>
-          </div>
-          <div class="footer__col">
-            <h4 class="footer__title">Company</h4>
-            <ul class="footer__links">
-              <li><a href="about.html" class="nav-link">Our Story</a></li>
-              <li><a href="contact.html" class="nav-link">Contact</a></li>
-            </ul>
-          </div>
-          <div class="footer__col">
-            <h4 class="footer__title">Social</h4>
-            <ul class="footer__links">
-              <li><a href="#">Instagram</a></li>
-              <li><a href="#">Pinterest</a></li>
-            </ul>
-          </div>
+        </section>
+      </div>
+    </header>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__col">
+          <div class="footer__brand">AETERNA.</div>
+          <p class="footer__desc">Curating essential pieces for the modern wardrobe.</p>
         </div>
-        <div class="footer__bottom">
-          &copy; 2026 AETERNA Brand.
+        <div class="footer__col">
+          <h4 class="footer__title">Shop</h4>
+          <ul class="footer__links">
+            <li><a href="#">All Collections</a></li>
+            <li><a href="#">New Arrivals</a></li>
+          </ul>
         </div>
-      </footer>
-    </main>
-  </div>
+        <div class="footer__col">
+          <h4 class="footer__title">Company</h4>
+          <ul class="footer__links">
+            <li><a href="about.html" class="nav-link">Our Story</a></li>
+            <li><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__title">Social</h4>
+          <ul class="footer__links">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Pinterest</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        &copy; 2026 AETERNA Brand.
+      </div>
+    </footer>
+  </main>
   <script src="js/app.js"></script>
 </body>
 </html>
