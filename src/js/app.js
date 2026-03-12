@@ -76,6 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
   let currentQty = 0;
 
+  const cartBtn = document.getElementById('cart-btn');
+  const cartDropdown = document.getElementById('cart-dropdown');
+
   // --- Search Logic ---
   const openSearch = () => {
     searchOverlay?.classList.add('active');
@@ -93,6 +96,18 @@ document.addEventListener('DOMContentLoaded', () => {
   searchBtn?.addEventListener('click', openSearch);
   searchBtnMobile?.addEventListener('click', openSearch);
   searchClose?.addEventListener('click', closeSearch);
+
+  // --- Cart Toggle ---
+  cartBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    cartDropdown?.classList.toggle('active');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (cartDropdown?.classList.contains('active') && !cartDropdown.contains(e.target) && e.target !== cartBtn) {
+      cartDropdown.classList.remove('active');
+    }
+  });
 
   searchInput?.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase();
@@ -255,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!content) return;
 
     closeSearch();
+    cartDropdown?.classList.remove('active');
     menuTrigger?.classList.remove('active');
     mobileMenu?.classList.remove('active');
     document.body.classList.remove('menu-open');
