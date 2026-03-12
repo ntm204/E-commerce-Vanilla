@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Detail | AETERNA.</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
 </head>
@@ -47,9 +48,7 @@
       </div>
 
       <div id="search-overlay">
-        <button id="search-close" class="header__icon-btn">
-          <i class="icon icon-close" style="width:32px; height:32px;"></i>
-        </button>
+        <button id="search-close" class="search-close-btn">CLOSE</button>
         <div class="search-container">
           <div class="search-input-wrapper">
             <input type="text" id="search-input" placeholder="Search our collection...">
@@ -76,36 +75,142 @@
 
     <main class="page-content" id="content">
       <div class="container">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <a href="index.html" class="nav-link">Home</a>
+          <span class="separator">/</span>
+          <a href="index.html" class="nav-link">Collections</a>
+          <span class="separator">/</span>
+          <span class="current" id="breadcrumb-current">...</span>
+        </nav>
+
         <section class="product">
           <div class="product__gallery">
             <div class="gallery__main img-placeholder">
               <img id="main-product-img" src="" alt="Product">
+              <button class="gallery__zoom"><i class="icon icon-search"></i></button>
             </div>
-            <div class="gallery__thumbnails">
+            <div class="gallery__thumbnails" id="product-thumbnails">
               <!-- Thumbnails injected here -->
             </div>
           </div>
 
-          <div class="product__info">
-            <h4 class="product__brand">AETERNA.</h4>
-            <h1 class="product__title">...</h1>
-            <p class="product__description">...</p>
+          <div class="product__info" data-lenis-prevent>
+            <div class="product__badges">
+              <span class="badge badge--new">New Arrival</span>
+            </div>
+            <h1 class="product__title" id="product-title">...</h1>
+            
+            <div class="product__reviews">
+              <div class="stars">★★★★★</div>
+              <span class="review-count">(128 Reviews)</span>
+            </div>
+
             <div class="product__price-wrapper">
-              <span class="price">...</span>
+              <span class="price" id="product-price">...</span>
+            </div>
+            
+            <p class="product__description" id="product-description">...</p>
+
+            <!-- Options -->
+            <div class="product__options">
+              <div class="option-group">
+                <div class="option-group__header">
+                  <span>Color:</span>
+                  <span id="selected-color" class="selected-val">Black</span>
+                </div>
+                <div class="color-swatches">
+                  <button class="swatch color-swatch active" style="background-color: #000;" data-color="Black" aria-label="Black"></button>
+                  <button class="swatch color-swatch" style="background-color: #f5f5dc;" data-color="Beige" aria-label="Beige"></button>
+                  <button class="swatch color-swatch" style="background-color: #556b2f;" data-color="Olive" aria-label="Olive"></button>
+                </div>
+              </div>
+
+              <div class="option-group">
+                <div class="option-group__header">
+                  <span>Size:</span>
+                  <span id="selected-size" class="selected-val">M</span>
+                  <button class="size-guide-btn">Size Guide</button>
+                </div>
+                <div class="size-swatches">
+                  <button class="swatch size-swatch" data-size="S">S</button>
+                  <button class="swatch size-swatch active" data-size="M">M</button>
+                  <button class="swatch size-swatch" data-size="L">L</button>
+                  <button class="swatch size-swatch" data-size="XL">XL</button>
+                </div>
+              </div>
             </div>
 
             <div class="product__actions">
               <div class="quantity-selector">
-                <button id="qty-minus"><i class="icon icon-minus"></i></button>
-                <span id="qty-value">0</span>
-                <button id="qty-plus"><i class="icon icon-plus"></i></button>
+                <button id="qty-minus" aria-label="Decrease quantity"><i class="icon icon-minus"></i></button>
+                <input type="number" id="qty-value" value="1" min="1" max="99" readonly>
+                <button id="qty-plus" aria-label="Increase quantity"><i class="icon icon-plus"></i></button>
               </div>
-              <button class="product__add-to-cart" id="add-to-cart">Add to Bag</button>
+              <button class="product__add-to-cart" id="add-to-cart">
+                <span class="btn-text">Add to Bag</span>
+              </button>
+            </div>
+            
+            <div class="product__features">
+              <div class="feature-item">
+                <span class="feature-icon">✓</span>
+                <span>Free global shipping over $200</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">↺</span>
+                <span>30-day easy returns</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">✦</span>
+                <span>Lifetime warranty on hardware</span>
+              </div>
+            </div>
+
+            <div class="product__accordions">
+              <div class="accordion active">
+                <button class="accordion__header">
+                  Product Details
+                  <span class="accordion__icon"></span>
+                </button>
+                <div class="accordion__content" style="max-height: 200px;">
+                  <p>Expertly crafted from sustainable materials. This product features reinforced stitching, an ergonomic fit, and premium detailing that sets the standard for modern essentials. Designed to age beautifully over time.</p>
+                </div>
+              </div>
+              <div class="accordion">
+                <button class="accordion__header">
+                  Materials & Care
+                  <span class="accordion__icon"></span>
+                </button>
+                <div class="accordion__content">
+                  <p>100% Organic Cotton. Machine wash cold with like colors. Do not bleach. Tumble dry low or hang to dry. Warm iron if needed. Dry cleaning recommended for longevity.</p>
+                </div>
+              </div>
+              <div class="accordion">
+                <button class="accordion__header">
+                  Shipping & Returns
+                  <span class="accordion__icon"></span>
+                </button>
+                <div class="accordion__content">
+                  <p>Complimentary shipping on all orders over $200. Standard delivery takes 3-5 business days. Returns are accepted within 30 days of purchase in original condition with tags attached.</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
+
+        <!-- Related Products -->
+        <section class="related-products">
+          <div class="section-header">
+            <h2>Complete the Look</h2>
+            <a href="index.html" class="nav-link view-all-link">View Collection</a>
+          </div>
+          <div class="product-grid" id="related-grid">
+            <!-- Dynamic related products injected here -->
+          </div>
+        </section>
       </div>
-    </header>
+    </main>
 
     <footer class="footer">
       <div class="container">

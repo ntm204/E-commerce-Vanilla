@@ -25,8 +25,8 @@ const products = [
     price: 210.00,
     category: 'Outerwear',
     description: 'A timeless silhouette designed for the modern nomad. Made from high-density organic canvas with water-resistant finishing.',
-    images: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-2.jpg'],
-    thumbnails: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-2-thumbnail.jpg']
+    images: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-2.jpg', 'https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-3.jpg'],
+    thumbnails: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-2-thumbnail.jpg', 'https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-3-thumbnail.jpg']
   },
   {
     id: 3,
@@ -34,8 +34,8 @@ const products = [
     price: 150.00,
     category: 'Footwear',
     description: 'Engineered for comfort and style. The Monochrome Runner features a recycled knit upper and a high-rebound sole.',
-    images: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-3.jpg'],
-    thumbnails: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-3-thumbnail.jpg']
+    images: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-3.jpg', 'https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-1.jpg'],
+    thumbnails: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-3-thumbnail.jpg', 'https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-1-thumbnail.jpg']
   },
   {
     id: 4,
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- State ---
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  let currentQty = 0;
+  let currentQty = 1;
 
   const cartBtn = document.getElementById('cart-btn');
   const cartDropdown = document.getElementById('cart-dropdown');
@@ -152,9 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <img src="${item.thumbnail}" alt="${item.name}" class="cart-item__img">
           <div class="cart-item__details">
             <p>${item.name}</p>
-            <p>$${item.price} x ${item.quantity}</p>
+            ${item.color ? `<p style="color: #888; font-size: 11px; margin-top: 2px;">${item.color} / ${item.size}</p>` : ''}
+            <p style="margin-top: 4px;">$${item.price} x ${item.quantity}</p>
           </div>
-          <button class="cart-item__delete" data-id="${item.id}">
+          <button class="cart-item__delete" data-cartid="${item.cartId || item.id}">
             <i class="icon icon-delete"></i>
           </button>
         </div>
@@ -165,8 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       container.querySelectorAll('.cart-item__delete').forEach(btn => {
         btn.onclick = () => {
-          const id = parseInt(btn.dataset.id);
-          cart = cart.filter(item => item.id !== id);
+          const cartId = btn.dataset.cartid;
+          cart = cart.filter(item => (item.cartId || item.id.toString()) !== cartId);
           saveCart();
         };
       });
@@ -203,9 +204,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const p = products.find(prod => prod.id === id);
     if (!p) return;
 
+    // Track recently viewed
+    trackRecentlyViewed(p.id);
+
+    const breadcrumbCurrent = document.getElementById('breadcrumb-current');
+    if(breadcrumbCurrent) breadcrumbCurrent.textContent = p.name;
+
     const mainImg = document.getElementById('main-product-img');
-    const thumbContainer = document.querySelector('.gallery__thumbnails');
-    const infoContainer = document.querySelector('.product__info');
+    const thumbContainer = document.getElementById('product-thumbnails');
 
     if (mainImg) mainImg.src = p.images[0];
     if (thumbContainer) {
@@ -216,45 +222,225 @@ document.addEventListener('DOMContentLoaded', () => {
       `).join('');
     }
     
-    if (infoContainer) {
-      infoContainer.querySelector('.product__title').textContent = p.name;
-      infoContainer.querySelector('.product__description').textContent = p.description;
-      infoContainer.querySelector('.price').textContent = `$${p.price.toFixed(2)}`;
+    const title = document.getElementById('product-title');
+    const desc = document.getElementById('product-description');
+    const price = document.getElementById('product-price');
+    if (title) title.textContent = p.name;
+    if (desc) desc.textContent = p.description;
+    if (price) price.textContent = `$${p.price.toFixed(2)}`;
+
+    currentQty = 1;
+    const qtyValue = document.getElementById('qty-value');
+    if(qtyValue) qtyValue.value = currentQty;
+
+    // Smart Stock Status
+    updateStockStatus();
+
+    // Delivery Estimate
+    updateDeliveryDate();
+
+    // Zoom Lightbox functionality
+    initLightbox(mainImg);
+
+    // Render Related Products
+    const relatedGrid = document.getElementById('related-grid');
+    if(relatedGrid) {
+      const related = products.filter(prod => prod.id !== p.id).slice(0, 2);
+      relatedGrid.innerHTML = related.map((rp, index) => `
+        <a href="product.html?id=${rp.id}" class="product-card nav-link" style="--i: ${index}">
+          <div class="product-card__img-wrapper img-placeholder">
+            <img src="${rp.images[0]}" alt="${rp.name}">
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">${rp.name}</h3>
+            <p class="product-card__price">$${rp.price.toFixed(2)}</p>
+          </div>
+        </a>
+      `).join('');
     }
 
     initProductEvents(p);
   };
 
+  const updateStockStatus = () => {
+    const stockEl = document.getElementById('stock-status');
+    if(!stockEl) return;
+    
+    setTimeout(() => {
+      const randomStock = Math.floor(Math.random() * 10) + 1;
+      const statusText = stockEl.querySelector('.status-text');
+      const pulse = stockEl.querySelector('.pulse-icon');
+      
+      if(randomStock < 5) {
+        statusText.innerHTML = `Only <strong>${randomStock} left</strong> in stock - order soon`;
+        statusText.style.color = '#e67e22';
+        if(pulse) pulse.style.backgroundColor = '#e67e22';
+      } else {
+        statusText.innerHTML = 'In stock, ready to ship';
+        statusText.style.color = '#27ae60';
+        if(pulse) pulse.style.backgroundColor = '#27ae60';
+      }
+    }, 800);
+  };
+
+  const updateDeliveryDate = () => {
+    const deliveryDateEl = document.getElementById('delivery-date');
+    if(!deliveryDateEl) return;
+    
+    const today = new Date();
+    const deliveryDate = new Date(today);
+    deliveryDate.setDate(today.getDate() + 3);
+    
+    const options = { weekday: 'long', month: 'long', day: 'numeric' };
+    deliveryDateEl.textContent = deliveryDate.toLocaleDateString('en-US', options);
+  };
+
+  const initLightbox = (mainImg) => {
+    const zoomBtn = document.querySelector('.gallery__zoom');
+    const galleryMain = document.querySelector('.gallery__main');
+    
+    const createLightbox = () => {
+      const lb = document.createElement('div');
+      lb.className = 'lightbox';
+      lb.style = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.98); z-index:5000; display:flex; align-items:center; justify-content:center; opacity:0; transition:0.4s; cursor:zoom-out;';
+      lb.innerHTML = `
+        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:40px;">
+          <img src="${mainImg.src}" style="max-width:100%; max-height:100%; object-fit:contain; box-shadow:0 30px 100px rgba(0,0,0,0.1);">
+        </div>
+        <button style="position:absolute; top:40px; right:40px; font-size:10px; letter-spacing:3px; font-weight:700; text-transform:uppercase; color:#000; background:#fff; padding:10px 20px; border:1px solid #eee;">CLOSE</button>
+      `;
+      document.body.appendChild(lb);
+      setTimeout(() => lb.style.opacity = '1', 10);
+      lb.onclick = () => {
+        lb.style.opacity = '0';
+        setTimeout(() => lb.remove(), 400);
+      };
+    };
+
+    if(zoomBtn) zoomBtn.onclick = (e) => { e.stopPropagation(); createLightbox(); };
+    if(galleryMain) galleryMain.onclick = () => createLightbox();
+  };
+
+  const trackRecentlyViewed = (id) => {
+    let viewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+    viewed = viewed.filter(v => v !== id);
+    viewed.unshift(id);
+    localStorage.setItem('recentlyViewed', JSON.stringify(viewed.slice(0, 10)));
+  };
+
   const initProductEvents = (p) => {
     const thumbnails = document.querySelectorAll('.thumbnail');
     const mainImg = document.getElementById('main-product-img');
-    const qtyValue = document.getElementById('qty-value');
-    const addToCartBtn = document.getElementById('add-to-cart');
-
+    
     thumbnails.forEach(thumb => {
       thumb.onclick = () => {
         thumbnails.forEach(t => t.classList.remove('active'));
         thumb.classList.add('active');
-        mainImg.src = thumb.dataset.src;
-        mainImg.classList.remove('loaded');
-        handleImageLoading();
+        
+        // Smooth transition
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+          mainImg.src = thumb.dataset.src;
+          mainImg.classList.remove('loaded');
+          handleImageLoading();
+          mainImg.style.opacity = '1';
+        }, 250);
       };
     });
 
-    document.getElementById('qty-minus').onclick = () => { if (currentQty > 0) { currentQty--; qtyValue.textContent = currentQty; } };
-    document.getElementById('qty-plus').onclick = () => { currentQty++; qtyValue.textContent = currentQty; };
+    const qtyValue = document.getElementById('qty-value');
+    const btnMinus = document.getElementById('qty-minus');
+    const btnPlus = document.getElementById('qty-plus');
 
-    addToCartBtn.onclick = () => {
-      if (currentQty > 0) {
-        const existing = cart.find(item => item.id === p.id);
-        if (existing) existing.quantity += currentQty;
-        else cart.push({ id: p.id, name: p.name, price: p.price, thumbnail: p.thumbnails[0], quantity: currentQty });
-        currentQty = 0;
-        qtyValue.textContent = 0;
-        saveCart();
-        document.getElementById('cart-dropdown')?.classList.add('active');
+    if(btnMinus) {
+      btnMinus.onclick = () => { 
+        if (currentQty > 1) { currentQty--; qtyValue.value = currentQty; } 
+      };
+    }
+    if(btnPlus) {
+      btnPlus.onclick = () => { 
+        if (currentQty < 99) { currentQty++; qtyValue.value = currentQty; } 
+      };
+    }
+
+    // Options (Color & Size)
+    const colorSwatches = document.querySelectorAll('.color-swatch');
+    const selectedColorText = document.getElementById('selected-color');
+    colorSwatches.forEach(swatch => {
+      swatch.onclick = () => {
+        colorSwatches.forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+        if(selectedColorText) selectedColorText.textContent = swatch.dataset.color;
       }
-    };
+    });
+
+    const sizeSwatches = document.querySelectorAll('.size-swatch');
+    const selectedSizeText = document.getElementById('selected-size');
+    sizeSwatches.forEach(swatch => {
+      swatch.onclick = () => {
+        sizeSwatches.forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+        if(selectedSizeText) selectedSizeText.textContent = swatch.dataset.size;
+      }
+    });
+
+    // Accordions
+    const accordions = document.querySelectorAll('.accordion');
+    accordions.forEach(acc => {
+      const header = acc.querySelector('.accordion__header');
+      if(header) {
+        header.onclick = () => {
+          const isActive = acc.classList.contains('active');
+          accordions.forEach(a => a.classList.remove('active'));
+          if(!isActive) acc.classList.add('active');
+        }
+      }
+    });
+
+    const addToCartBtn = document.getElementById('add-to-cart');
+    if(addToCartBtn) {
+      addToCartBtn.onclick = () => {
+        if (currentQty > 0) {
+          const selectedColor = document.querySelector('.color-swatch.active')?.dataset.color || 'Black';
+          const selectedSize = document.querySelector('.size-swatch.active')?.dataset.size || 'M';
+          
+          const cartId = `${p.id}-${selectedColor}-${selectedSize}`;
+          const existing = cart.find(item => item.cartId === cartId);
+          
+          if (existing) {
+            existing.quantity += currentQty;
+          } else {
+            cart.push({ 
+              cartId: cartId,
+              id: p.id, 
+              name: p.name, 
+              price: p.price, 
+              thumbnail: p.thumbnails[0], 
+              quantity: currentQty,
+              color: selectedColor,
+              size: selectedSize
+            });
+          }
+          
+          currentQty = 1;
+          qtyValue.value = 1;
+          saveCart();
+          
+          // Button feedback
+          const btnText = addToCartBtn.querySelector('.btn-text') || addToCartBtn;
+          const originalText = btnText.textContent;
+          btnText.textContent = 'Added to Bag!';
+          addToCartBtn.style.backgroundColor = '#4CAF50';
+          addToCartBtn.style.color = '#fff';
+          
+          setTimeout(() => {
+            btnText.textContent = originalText;
+            addToCartBtn.style.backgroundColor = '';
+            document.getElementById('cart-dropdown')?.classList.add('active');
+          }, 1000);
+        }
+      };
+    }
   };
 
   const handleImageLoading = () => {
