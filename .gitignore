@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Hệ điều hành (Chặn ở mọi thư mục con)
+**/.DS_Store
+**/.DS_Store?
+**/Thumbs.db
+**/desktop.ini
+
+# Các file log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# SASS & CSS
+.sass-cache/
+*.cache
+*.css.map
+
+# Bảo mật
+.env
+*.env.local
+
+# IDEs/Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build folders
+dist/
+build/
+out/
+docs/

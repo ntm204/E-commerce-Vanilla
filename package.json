@@ -1,0 +1,15 @@
+{
+  "name": "ecommerce-product-page",
+  "version": "1.0.0",
+  "description": "E-commerce Product Page with Vanilla JS, SCSS, and Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync start --server 'src' --files 'src' --port 3000",
+    "sass:watch": "sass src/scss/main.scss src/css/style.css --watch",
+    "sass:build": "sass src/scss/main.scss src/css/style.css --style compressed"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.0",
+    "sass": "^1.70.0"
+  }
+}

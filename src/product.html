@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | AETERNA.</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="container">
+        <div class="header__left">
+          <button class="header__menu-trigger" id="menu-trigger">
+            <span></span>
+            <span></span>
+          </button>
+          <nav class="header__nav">
+            <ul>
+              <li><a href="index.html" class="nav-link">Collections</a></li>
+              <li><a href="about.html" class="nav-link">About</a></li>
+              <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="header__logo">
+          <a href="index.html" class="nav-link">AETERNA<span>.</span></a>
+        </div>
+
+        <div class="header__right">
+          <button class="header__icon-btn" id="search-btn">
+            <i class="icon icon-search"></i>
+          </button>
+          <button class="header__icon-btn header__cart-btn" id="cart-btn">
+            <i class="icon icon-cart"></i>
+            <span class="header__cart-count" id="cart-count">0</span>
+          </button>
+          <div class="header__avatar header__icon-btn">
+            <i class="icon icon-user"></i>
+          </div>
+        </div>
+      </div>
+
+      <div id="search-overlay">
+        <button id="search-close" class="header__icon-btn">
+          <i class="icon icon-close" style="width:32px; height:32px;"></i>
+        </button>
+        <div class="search-container">
+          <div class="search-input-wrapper">
+            <input type="text" id="search-input" placeholder="Search our collection...">
+          </div>
+          <div id="search-results"></div>
+        </div>
+      </div>
+
+      <div class="mobile-menu" id="mobile-menu">
+        <ul class="mobile-menu__nav">
+          <li><a href="index.html" class="mobile-menu__link nav-link">Collections</a></li>
+          <li><a href="about.html" class="mobile-menu__link nav-link">Our Story</a></li>
+          <li><a href="contact.html" class="mobile-menu__link nav-link">Connect</a></li>
+        </ul>
+      </div>
+
+      <div class="cart-dropdown" id="cart-dropdown">
+        <div class="cart-dropdown__header">Shopping Bag</div>
+        <div class="cart-dropdown__content" id="cart-items">
+          <p class="cart-dropdown__empty">Your bag is empty.</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content" id="content">
+      <section class="product container">
+        <div class="product__gallery">
+          <div class="gallery__main img-placeholder">
+            <img id="main-product-img" src="" alt="">
+          </div>
+          <div class="gallery__thumbnails">
+            <!-- Dynamic thumbs -->
+          </div>
+        </div>
+
+        <div class="product__info">
+          <span class="product__brand">AETERNA.</span>
+          <h1 class="product__title">...</h1>
+          <p class="product__description">...</p>
+          <div class="product__price-container">
+            <span class="price">...</span>
+          </div>
+
+          <div class="product__actions">
+            <div class="product__quantity">
+              <button id="qty-minus"><i class="icon icon-minus"></i></button>
+              <span id="qty-value">0</span>
+              <button id="qty-plus"><i class="icon icon-plus"></i></button>
+            </div>
+            <button class="product__add-to-cart" id="add-to-cart">
+              Add to Bag
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="container">
+          <div class="footer__col">
+            <div class="footer__brand">AETERNA.</div>
+            <p class="footer__desc">Curating essential pieces for the modern wardrobe.</p>
+          </div>
+          <div class="footer__col">
+            <h4 class="footer__title">Shop</h4>
+            <ul class="footer__links">
+              <li><a href="#">All Collections</a></li>
+              <li><a href="#">New Arrivals</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h4 class="footer__title">Company</h4>
+            <ul class="footer__links">
+              <li><a href="about.html" class="nav-link">Our Story</a></li>
+              <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h4 class="footer__title">Social</h4>
+            <ul class="footer__links">
+              <li><a href="#">Instagram</a></li>
+              <li><a href="#">Pinterest</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          &copy; 2026 AETERNA Brand.
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="js/app.js"></script>
+</body>
+</html>
