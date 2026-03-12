@@ -45,6 +45,24 @@ const products = [
     description: 'The ultimate in relaxed sophistication. These trousers are cut from a luxurious silk-cotton blend for a fluid drape.',
     images: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-4.jpg'],
     thumbnails: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-4-thumbnail.jpg']
+  },
+  {
+    id: 5,
+    name: 'Minimalist Tote Bag',
+    price: 95.00,
+    category: 'Accessories',
+    description: 'A clean, architectural tote designed to carry your daily essentials with ease. Crafted from premium full-grain leather.',
+    images: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-1.jpg'],
+    thumbnails: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-1-thumbnail.jpg']
+  },
+  {
+    id: 6,
+    name: 'Standard Issue Tee',
+    price: 45.00,
+    category: 'Apparel',
+    description: 'The perfect heavyweight tee. Custom knit from 100% organic cotton for a structured yet soft feel.',
+    images: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-2.jpg'],
+    thumbnails: ['https://raw.githubusercontent.com/fom-solutions/sneakers-product-page/main/images/image-product-2-thumbnail.jpg']
   }
 ];
 
@@ -245,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render Related Products
     const relatedGrid = document.getElementById('related-grid');
     if(relatedGrid) {
-      const related = products.filter(prod => prod.id !== p.id).slice(0, 2);
+      const related = products.filter(prod => prod.id !== p.id).slice(0, 4);
       relatedGrid.innerHTML = related.map((rp, index) => `
         <a href="product.html?id=${rp.id}" class="product-card nav-link" style="--i: ${index}">
           <div class="product-card__img-wrapper img-placeholder">
